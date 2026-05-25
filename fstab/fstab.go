@@ -6,6 +6,17 @@ import (
 	"strings"
 )
 
+type LineParsingError struct {
+	Len  int
+	Line string
+}
+
+func (e LineParsingError) Error() string {
+	return fmt.Sprintf("invalid line len(%d): %s", e.Len, e.Line)
+}
+
+var _ error = LineParsingError{}
+
 type FsEntry struct {
 	Device     string
 	Mountpoint string
@@ -45,7 +56,10 @@ func clearComments(line string) string {
 func parseLine(line string) (FsEntry, error) {
 	split := strings.Fields(line)
 	if len(split) < 6 {
-		return FsEntry{}, fmt.Errorf("invalid line len(%d): %s", len(split), line)
+		return FsEntry{}, LineParsingError{
+			Line: line,
+			Len:  len(line),
+		}
 	}
 	return FsEntry{
 		Device:     split[0],
