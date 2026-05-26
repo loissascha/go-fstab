@@ -31,7 +31,11 @@ func ReadFile(path string) ([]FsEntry, error) {
 	if err != nil {
 		return nil, err
 	}
-	split := strings.SplitSeq(string(f), "\n")
+	return parseStr(string(f))
+}
+
+func parseStr(f string) ([]FsEntry, error) {
+	split := strings.SplitSeq(f, "\n")
 	res := make([]FsEntry, 0)
 	for line := range split {
 		line = clearComments(line)
