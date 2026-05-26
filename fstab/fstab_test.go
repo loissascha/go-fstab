@@ -23,7 +23,7 @@ UUID=E90A-1DBE      	/boot/efi 	vfat      	rw,relatime,fmask=0022,dmask=0022,cod
 
 UUID=36614       /home   ext4    defaults,noatime       0       2
 
-UUID=dbe746       /mnt/disk2      ext4  defaults,noatime 0       2
+  UUID=dbe746 /mnt/disk2 ext4 defaults,noatime 0 2  
 
 //192.168.0.100/Media /mnt/media cifs credentials=/etc/samba/creds/my_server_creds,uid=1000,gid=1000,file_mode=0664,dir_mode=0775,iocharset=utf8,vers=3.0,nofail,soft,noserverino,x-systemd.automount,_netdev	0	0
 	`)
@@ -41,4 +41,7 @@ UUID=dbe746       /mnt/disk2      ext4  defaults,noatime 0       2
 	assert.Equal(t, "stripe=4", rootFs.Options[2])
 	assert.Equal(t, "0", rootFs.Dump)
 	assert.Equal(t, "1", rootFs.Fsck)
+
+	assert.Equal(t, "UUID=dbe746", entries[4].Device)
+	assert.Equal(t, "/mnt/disk2", entries[4].Mountpoint)
 }
