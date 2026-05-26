@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestParsing(t *testing.T) {
+func TestStringParsing(t *testing.T) {
 	entries, err := parseStr(`
 # Static information about the filesystems.
 # See fstab(5) for details.
