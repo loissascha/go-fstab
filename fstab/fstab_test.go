@@ -1,11 +1,41 @@
 package fstab
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
+
+func TestCorrectError(t *testing.T) {
+	entries, err := parseStr(`
+# Static information about the filesystems.
+# See fstab(5) for details.
+
+# <file system> <dir> <type> <options> <dump> <pass>
+# /dev/nvme2n1p4
+UUID=7a235ef76a	/         	ext4      	
+
+# /dev/nvme2n1p2
+UUID=9e6757da	/boot     	ext4      	rw,relatime,stripe=32	0 2 # trailing comment
+	`)
+
+	require.Error(t, err)
+	require.Nil(t, entries)
+
+	var parsingErr LineParsingError
+	assert.True(t, errors.As(err, &parsingErr))
+}
+
+func TestReadFileInvalidFile(t *testing.T) {
+	entries, err := ReadFile("/this/file/does/not/exist.nn")
+
+	var parsingErr LineParsingError
+	require.Error(t, err)
+	require.Nil(t, entries)
+	assert.False(t, errors.As(err, &parsingErr))
+}
 
 func TestStringParsing(t *testing.T) {
 	entries, err := parseStr(`
