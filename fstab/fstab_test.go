@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestStringParsing(t *testing.T) {
@@ -28,7 +29,7 @@ UUID=36614       /home   ext4    defaults,noatime       0       2
 //192.168.0.100/Media /mnt/media cifs credentials=/etc/samba/creds/my_server_creds,uid=1000,gid=1000,file_mode=0664,dir_mode=0775,iocharset=utf8,vers=3.0,nofail,soft,noserverino,x-systemd.automount,_netdev	0	0
 	`)
 
-	assert.Nil(t, err)
+	require.NoError(t, err)
 	assert.Equal(t, 6, len(entries))
 
 	rootFs := entries[0]
