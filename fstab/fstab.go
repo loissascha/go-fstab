@@ -39,9 +39,11 @@ func AddEntry(path string, entry FsEntry) error {
 	if err != nil {
 		return err
 	}
-	currentContent := string(f)
-	newLine := entryToLine(entry)
-	newContent := fmt.Sprintf("%s\n%s", currentContent, newLine)
+	line, err := entryToLine(entry)
+	if err != nil {
+		return err
+	}
+	newContent := fmt.Sprintf("%s\n%s", string(f), line)
 	return os.WriteFile(path, []byte(newContent), 0644)
 }
 
@@ -86,13 +88,21 @@ func parseLine(line string) (FsEntry, error) {
 	}, nil
 }
 
-func entryToLine(entry FsEntry) string {
-	options := ""
+func entryToLine(entry FsEntry) (string, error) {
+	var sb strings.Builder
+	first := true
 	for _, o := range entry.Options {
-		if options != "" {
-			options += ","
+		if !first {
+			_, err := sb.WriteString(",")
+			if err != nil {
+				return "", err
+			}
 		}
-		options += o
+		first = false
+		_, err := sb.WriteString(o)
+		if err != nil {
+			return "", err
+		}
 	}
-	return fmt.Sprintf("%s %s %s %s %s %s", entry.Device, entry.Mountpoint, entry.FsType, options, entry.Dump, entry.Fsck)
+	return fmt.Sprintf("%s %s %s %s %s %s", entry.Device, entry.Mountpoint, entry.FsType, sb.String(), entry.Dump, entry.Fsck), nil
 }
