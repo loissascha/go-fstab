@@ -33,4 +33,12 @@ UUID=dbe746       /mnt/disk2      ext4  defaults,noatime 0       2
 
 	rootFs := entries[0]
 	assert.Equal(t, "UUID=7a235ef76a", rootFs.Device)
+	assert.Equal(t, "/", rootFs.Mountpoint)
+	assert.Equal(t, "ext4", rootFs.FsType)
+	assert.Equal(t, 3, len(rootFs.Options))
+	assert.Equal(t, "rw", rootFs.Options[0])
+	assert.Equal(t, "relatime", rootFs.Options[1])
+	assert.Equal(t, "stripe=4", rootFs.Options[2])
+	assert.Equal(t, "0", rootFs.Dump)
+	assert.Equal(t, "1", rootFs.Fsck)
 }
