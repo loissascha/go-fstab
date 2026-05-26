@@ -34,6 +34,17 @@ func ReadFile(path string) ([]FsEntry, error) {
 	return parseStr(string(f))
 }
 
+func AddEntry(path string, entry FsEntry) error {
+	f, err := os.ReadFile(path)
+	if err != nil {
+		return err
+	}
+	currentContent := string(f)
+	newLine := entryToLine(entry)
+	newContent := fmt.Sprintf("%s\n%s", currentContent, newLine)
+	return os.WriteFile(path, []byte(newContent), 0644)
+}
+
 func parseStr(f string) ([]FsEntry, error) {
 	split := strings.SplitSeq(f, "\n")
 	res := make([]FsEntry, 0)
@@ -73,4 +84,15 @@ func parseLine(line string) (FsEntry, error) {
 		Dump:       split[4],
 		Fsck:       split[5],
 	}, nil
+}
+
+func entryToLine(entry FsEntry) string {
+	options := ""
+	for _, o := range entry.Options {
+		if options != "" {
+			options += ","
+		}
+		options += o
+	}
+	return fmt.Sprintf("%s %s %s %s %s %s", entry.Device, entry.Mountpoint, entry.FsType, options, entry.Dump, entry.Fsck)
 }
