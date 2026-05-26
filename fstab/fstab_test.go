@@ -17,7 +17,7 @@ func TestStringParsing(t *testing.T) {
 UUID=7a235ef76a	/         	ext4      	rw,relatime,stripe=4	0 1
 
 # /dev/nvme2n1p2
-UUID=9e6757da	/boot     	ext4      	rw,relatime,stripe=32	0 2
+UUID=9e6757da	/boot     	ext4      	rw,relatime,stripe=32	0 2 # trailing comment
 
 # /dev/nvme2n1p1
 UUID=E90A-1DBE      	/boot/efi 	vfat      	rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro	0 2
