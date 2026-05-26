@@ -1,6 +1,10 @@
 package fstab
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
 
 func TestParsing(t *testing.T) {
 	entries, err := parseStr(`
@@ -23,10 +27,10 @@ UUID=dbe746       /mnt/disk2      ext4  defaults,noatime 0       2
 
 //192.168.0.100/Media /mnt/media cifs credentials=/etc/samba/creds/my_server_creds,uid=1000,gid=1000,file_mode=0664,dir_mode=0775,iocharset=utf8,vers=3.0,nofail,soft,noserverino,x-systemd.automount,_netdev	0	0
 	`)
-	if err != nil {
-		t.Error(err)
-	}
-	if len(entries) != 6 {
-		t.Errorf("Entries count is wrong. Expected: 6. Got: %d", len(entries))
-	}
+
+	assert.Nil(t, err)
+	assert.Equal(t, 6, len(entries))
+
+	rootFs := entries[0]
+	assert.Equal(t, "UUID=7a235ef76a", rootFs.Device)
 }
