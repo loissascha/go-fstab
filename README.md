@@ -67,3 +67,7 @@ Example of a broken line:
 ```txt
 UUID=1234 / ext4 defaults
 ```
+
+## License
+
+MIT
