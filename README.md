@@ -51,3 +51,19 @@ type FsEntry struct {
 ```
 
 Comments and empty lines are skipped.
+
+## Possible errors
+
+`ReadFile` can return normal file errors, for example when the file does not exist or cannot be read.
+
+It can also return a `LineParsingError` when a line is not a valid fstab line. A valid line needs these 6 fields:
+
+```txt
+<device> <mountpoint> <type> <options> <dump> <fsck>
+```
+
+Example of a broken line:
+
+```txt
+UUID=1234 / ext4 defaults
+```
