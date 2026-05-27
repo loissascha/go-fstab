@@ -22,4 +22,18 @@ func main() {
 		fmt.Println("Fsck:", r.Fsck)
 		fmt.Println("__________________")
 	}
+
+	exampleEntry := fstab.FsEntry{
+		Device:     "textexample",
+		Mountpoint: "/mnt/testexample",
+		FsType:     "ext4",
+		Options:    []string{"opt1", "opt2"},
+		Dump:       "0",
+		Fsck:       "0",
+	}
+
+	err = fstab.AddEntry("/etc/fstab", exampleEntry)
+	if err != nil {
+		panic(err)
+	}
 }
